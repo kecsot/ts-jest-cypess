@@ -9,6 +9,7 @@ export type Position = {
 export type SnakeMap = {
     row: number
     col: number
+    isGameOver: boolean
 
     apple: Apple
     snake: Snake
