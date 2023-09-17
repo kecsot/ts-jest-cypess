@@ -1,5 +1,5 @@
 import {SnakeMap} from "../@types/map.type.ts";
-import {generateDifferentPosition} from "./position.ts";
+import {generateDifferentPositionThan} from "./position.ts";
 import {Apple} from "../@types/apple.type.ts";
 import {Snake, SnakeHeadDirection} from "../@types/snake.type.ts";
 
@@ -11,7 +11,7 @@ import {Snake, SnakeHeadDirection} from "../@types/snake.type.ts";
  * @param col
  * @param row
  */
-const createMap = (col: number, row: number): SnakeMap => {
+const createSnakeMap = (col: number, row: number): SnakeMap => {
     const apple: Apple = {
         position: {
             x: Math.floor(Math.random() * col),
@@ -19,7 +19,7 @@ const createMap = (col: number, row: number): SnakeMap => {
         }
     }
 
-    const snakeStartPosition = generateDifferentPosition(apple.position, col, row)
+    const snakeStartPosition = generateDifferentPositionThan(apple.position, col, row)
     const snake: Snake = {
         positions: [snakeStartPosition],
         headDirection: SnakeHeadDirection.RIGHT
@@ -33,4 +33,4 @@ const createMap = (col: number, row: number): SnakeMap => {
     } as SnakeMap;
 }
 
-export default createMap;
+export default createSnakeMap;
