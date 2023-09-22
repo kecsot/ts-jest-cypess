@@ -1,5 +1,5 @@
-import {Position} from "../@types/map.type.ts";
 import {generateDifferentValueBetween} from "./math.ts";
+import {Position} from "../@types/position.type.ts";
 
 const generateDifferentPositionThan = (position: Position, maxX: number, maxY: number): Position => {
     if (maxX <= 0 || maxY <= 0) throw new Error('maxX or maxY must be greater than zero');

@@ -1,4 +1,4 @@
-import {Position} from "../@types/map.type.ts";
+import {Position} from "../@types/position.type.ts";
 import {generateDifferentPositionThan} from "./position.ts";
 
 describe('generateDifferentPosition', () => {
