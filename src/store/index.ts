@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit'
-import snakeGameSlice from "../features/map/snakeGameSlice.ts";
+import snakeGameSlice from "../features/snakeGame/redux/snakeGameSlice.ts";
 
 const store = configureStore({
     reducer: {
