@@ -1,6 +1,6 @@
 export enum SnakeHeadDirection {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    UP = 'up',
+    DOWN = 'down',
+    LEFT = 'left',
+    RIGHT = 'right',
 }
