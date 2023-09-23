@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {RootState} from "../../store";
-import {generateDifferentPositionThan, generateDifferentPositionThanThese} from "../../utils/position.ts";
-import {Position} from "../../@types/position.type.ts";
-import {SnakeHeadDirection} from "../../@types/snake.type.ts";
+import {RootState} from "../../../store";
+import {generateDifferentPositionThan, generateDifferentPositionThanThese} from "../../../utils/position.ts";
+import {Position} from "../../../@types/position.type.ts";
+import {SnakeHeadDirection} from "../../../@types/snake.type.ts";
 
 
 export interface SnakeGameState {
@@ -121,8 +121,16 @@ export const snakeGameSlice = createSlice({
         },
         changeSnakeDirection: (state, action: PayloadAction<SnakeHeadDirection>) => {
             if (state.isGameOver) return
-            if (state.snake.headDirection === action.payload) return
             if (state.snake.isTurnLocked) return
+
+            const currentHeadDirection = state.snake.headDirection
+            const newHeadDirection = action.payload
+
+            if (newHeadDirection === currentHeadDirection) return
+            if (newHeadDirection === SnakeHeadDirection.UP && currentHeadDirection === SnakeHeadDirection.DOWN) return;
+            if (newHeadDirection === SnakeHeadDirection.DOWN && currentHeadDirection === SnakeHeadDirection.UP) return;
+            if (newHeadDirection === SnakeHeadDirection.LEFT && currentHeadDirection === SnakeHeadDirection.RIGHT) return;
+            if (newHeadDirection === SnakeHeadDirection.RIGHT && currentHeadDirection === SnakeHeadDirection.LEFT) return;
 
             state.snake.isTurnLocked = true
             state.snake.headDirection = action.payload;
@@ -138,6 +146,6 @@ export const {
 
 export const selectSnakePositions = (state: RootState) => state.snakeGame.snake.positions
 export const selectApplePosition = (state: RootState) => state.snakeGame.apple.position
-export const isGameOver = (state: RootState) => state.snakeGame.isGameOver
+export const selectIsGameOver = (state: RootState) => state.snakeGame.isGameOver
 
 export default snakeGameSlice.reducer

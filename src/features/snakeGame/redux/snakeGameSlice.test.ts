@@ -1,5 +1,5 @@
 import reducer, {changeSnakeDirection, initializeGame, moveSnake, SnakeGameState} from "./snakeGameSlice.ts";
-import {SnakeHeadDirection} from "../../@types/snake.type.ts";
+import {SnakeHeadDirection} from "../../../@types/snake.type.ts";
 
 describe('Generate Map', () => {
     test('Map column, row is equal', () => {
@@ -148,7 +148,7 @@ describe("Snake direction", () => {
             let newState = reducer(modifiedState, changeSnakeDirection(goalDirection));
             newState = reducer(newState, moveSnake());
 
-            expect(newState.snake.headDirection).toBe(goalDirection)
+            expect(newState.snake.headDirection).toBe(headDirection);
         }
     })
 
