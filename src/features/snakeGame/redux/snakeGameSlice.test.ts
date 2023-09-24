@@ -44,6 +44,16 @@ describe('Generate Snake', () => {
         expect(state.snake.positions.length).toBeGreaterThan(0)
     })
 
+    test('snake starts in the middle', () => {
+        const statePositive = reducer(undefined, initializeGame({xMax: 6, yMax: 8}));
+        expect(statePositive.snake.positions[0].x).toEqual(3)
+        expect(statePositive.snake.positions[0].y).toEqual(4)
+
+        const stateNegative = reducer(undefined, initializeGame({xMax: 5, yMax: 7}));
+        expect(stateNegative.snake.positions[0].x).toEqual(2)
+        expect(stateNegative.snake.positions[0].y).toEqual(3)
+    })
+
     test('snake has only one position after init', () => {
         const state = reducer(undefined, initializeGame({xMax: 5, yMax: 5}));
         expect(state.snake.positions.length).toEqual(1)

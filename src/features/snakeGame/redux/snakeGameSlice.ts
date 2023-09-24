@@ -62,10 +62,11 @@ export const snakeGameSlice = createSlice({
             const xMax = action.payload.xMax
             const yMax = action.payload.yMax
 
-            const applePosition = {
-                x: Math.floor(Math.random() * xMax),
-                y: Math.floor(Math.random() * yMax)
+            const snakePosition = {
+                x: Math.floor(xMax / 2),
+                y: Math.floor(yMax / 2)
             }
+            const applePosition = generateDifferentPositionThan(snakePosition, xMax, yMax)
             return {
                 isGameOver: false,
                 map: {
@@ -76,7 +77,7 @@ export const snakeGameSlice = createSlice({
                     position: applePosition
                 },
                 snake: {
-                    positions: [generateDifferentPositionThan(applePosition, xMax, yMax)],
+                    positions: [snakePosition],
                     headDirection: SnakeHeadDirection.RIGHT,
                     isTurnLocked: false
                 }
