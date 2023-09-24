@@ -13,8 +13,7 @@ export type SnakeGameControllerContextType = {
     isGameOver: boolean
 
     snakePositions: Position[]
-    isSnakePosition: (x: number, y: number) => boolean
-    isApplePosition: (x: number, y: number) => boolean
+    applePosition: Position
 }
 
 const SnakeGameControllerContext = createContext<SnakeGameControllerContextType | null>(null)

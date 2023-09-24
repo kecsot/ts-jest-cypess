@@ -30,7 +30,7 @@ export const SnakeGame = () => {
                     <button onClick={restartGame}>Restart Game</button>
                 )}
             </div>
-            <SnakeGameMap/>
+            <SnakeGameMap size={500}/>
         </>
     )
 }

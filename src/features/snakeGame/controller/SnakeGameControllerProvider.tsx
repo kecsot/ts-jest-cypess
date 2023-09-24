@@ -72,14 +72,6 @@ export function SnakeGameControllerProvider({children}: Props) {
         return snakePositions.length - 1
     }, [snakePositions.length])
 
-    const isSnakePosition = useCallback((x: number, y: number) => {
-        return snakePositions.some(position => position.x === x && position.y === y)
-    }, [snakePositions])
-
-    const isApplePosition = useCallback((x: number, y: number) => {
-        return applePosition.x === x && applePosition.y === y
-    }, [applePosition])
-
     const value = useMemo(
         () => ({
             columns,
@@ -93,9 +85,8 @@ export function SnakeGameControllerProvider({children}: Props) {
             isGameOver,
 
             snakePositions,
-            isSnakePosition,
-            isApplePosition
-        } as SnakeGameControllerContextType), [columns, rows, initGame, startGame, restartGame, score, isGameOver, snakePositions, isSnakePosition, isApplePosition])
+            applePosition
+        } as SnakeGameControllerContextType), [columns, rows, initGame, startGame, restartGame, score, isGameOver, snakePositions, applePosition])
 
     return (
         <SnakeGameControllerContext.Provider value={value}>

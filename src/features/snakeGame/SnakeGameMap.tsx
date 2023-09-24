@@ -1,42 +1,106 @@
 import {useSnakeGameControllerContext} from "./controller/useSnakeGameControllerContext.tsx";
+import {useMemo} from "react";
 
+type Props = {
+    size: number;
+};
 
-export const SnakeGameMap = () => {
+export const SnakeGameMap = ({size}: Props) => {
 
     const {
         columns,
         rows,
-        isSnakePosition,
-        isApplePosition
+        snakePositions,
+        applePosition
     } = useSnakeGameControllerContext()
 
-    /**
-     *  // TODO:
-     *      Optimize rendering?
-     *          Idea:
-     *          - Render whole map only once
-     *          - Render snake parts above the map
-     */
-    return (
-        <table>
-            <tbody>
-            {Array.from({length: columns}, (_, y) => (
-                <tr key={y}>
-                    {Array.from({length: rows}, (_, x) => {
-                        const isSnake = isSnakePosition(x, y)
-                        const isApple = isApplePosition(x, y)
+    const mapLayer = useMemo(() => {
+        return (
+            <div style={{
+                display: "grid",
+                width: `${size}px`,
+                height: `${size}px`,
+                gridTemplateColumns: `repeat(${columns}, 1fr)`,
+                gap: 0,
+            }}>
+                {Array.from({length: columns}, (_, y) => (
+                    <div key={y}>
+                        {Array.from({length: rows}, (_, x) => {
+                            return (
+                                <div
+                                    key={`map-piece-${x}-${y}`}
+                                    style={{
+                                        background: 'black',
+                                        height: `${size / rows}px`,
+                                        width: `${size / columns}px`,
+                                        padding: 0,
+                                    }}
+                                >
+                                </div>
+                            )
+                        })}
+                    </div>
+                ))}
+            </div>
+        )
+    }, [columns, rows, size])
 
-                        return (
-                            <td key={x} style={{width: '1rem'}}>
-                                {isSnake ? 's' : ''}
-                                {isApple ? 'a' : ''}
-                                {!isSnake && !isApple ? '-' : ''}
-                            </td>
-                        )
-                    })}
-                </tr>
-            ))}
-            </tbody>
-        </table>
+    const snakeLayer = useMemo(() => {
+        const pieceWidth = size / columns
+        const pieceHeight = size / rows
+
+        return (
+            <>
+                {snakePositions.map(({x, y}, index) => {
+                    return (
+                        <div
+                            key={`snake-${x}-${y}`}
+                            style={{
+                                position: 'absolute',
+                                left: `${x * pieceWidth}px`,
+                                top: `${y * pieceHeight}px`,
+                                width: `${pieceWidth}px`,
+                                height: `${pieceHeight}px`,
+                                background: index === 0 ? 'purple' : 'yellow',
+                                borderRadius: '30%',
+                                zIndex: 2,
+                            }}
+                        >
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }, [columns, rows, size, snakePositions])
+
+    const appleLayer = useMemo(() => {
+        const pieceWidth = size / columns
+        const pieceHeight = size / rows
+
+        return (
+            <div
+                key='apple'
+                style={{
+                    position: 'absolute',
+                    left: `${applePosition.x * pieceWidth}px`,
+                    top: `${applePosition.y * pieceHeight}px`,
+                    width: `${pieceWidth}px`,
+                    height: `${pieceHeight}px`,
+                    background: 'green',
+                    borderRadius: '50%',
+                    zIndex: 2,
+                }}>
+            </div>
+        )
+    }, [applePosition, size, columns, rows])
+
+    return (
+        <div style={{
+            position: 'relative',
+        }}>
+            {mapLayer}
+            {snakeLayer}
+            {appleLayer}
+        </div>
     )
 }
