@@ -61,6 +61,7 @@ export const snakeGameSlice = createSlice({
         initializeGame: (_, action: PayloadAction<{ xMax: number, yMax: number }>) => {
             const xMax = action.payload.xMax
             const yMax = action.payload.yMax
+            if (xMax < 1 || yMax < 1) throw new Error('xMax and yMax must be greater than 0')
 
             const snakePosition = {
                 x: Math.floor(xMax / 2),

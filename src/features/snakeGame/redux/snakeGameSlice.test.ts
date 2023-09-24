@@ -2,13 +2,28 @@ import reducer, {changeSnakeDirection, initializeGame, moveSnake, SnakeGameState
 import {SnakeHeadDirection} from "../../../@types/snake.type.ts";
 
 describe('Generate Map', () => {
-    test('Map column, row is equal', () => {
+    test('xMax and yMax minimum is 1x1', () => {
+        const state = reducer(undefined, initializeGame({xMax: 1, yMax: 1}));
+        expect(state.map).toBeTruthy()
+    })
+
+    test('xMax and yMax minimum is 1x1', () => {
+        expect(() => {
+            return reducer(undefined, initializeGame({xMax: 0, yMax: 1}))
+        }).toThrow('xMax and yMax must be greater than 0')
+
+        expect(() => {
+            return reducer(undefined, initializeGame({xMax: 1, yMax: 0}))
+        }).toThrow('xMax and yMax must be greater than 0')
+    })
+
+    test('xMax, yMax is equal', () => {
         const state = reducer(undefined, initializeGame({xMax: 2, yMax: 5}));
         expect(state.map.xMax).toBe(2)
         expect(state.map.yMax).toBe(5)
     })
 
-    test('Map col and row is equal to random', () => {
+    test('Map xMay and yMax is equal to random', () => {
         const randomY = Math.floor(Math.random() * 10) + 1
         const randomX = Math.floor(Math.random() * 10) + 1
         const state = reducer(undefined, initializeGame({xMax: randomX, yMax: randomY}));
