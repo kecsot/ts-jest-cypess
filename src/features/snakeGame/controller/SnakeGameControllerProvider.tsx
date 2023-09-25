@@ -23,6 +23,8 @@ export function SnakeGameControllerProvider({children}: Props) {
     const isGameOver = useAppSelector(selectIsGameOver)
     const [columns, setColumns] = useState<number | undefined>()
     const [rows, setRows] = useState<number | undefined>()
+    const [isGameRunning, setIsGameRunning] = useState<boolean>(false)
+    const [timeoutNumber, setTimeoutNumber] = useState<NodeJS.Timeout | undefined>()
 
     const handleKeyPress = useCallback((e: { key: string; }) => {
         const key = e.key
@@ -45,22 +47,33 @@ export function SnakeGameControllerProvider({children}: Props) {
         return () => window.removeEventListener('keydown', handleKeyPress, false)
     }, [])
 
-    const callNextMove = useCallback(() => {
-        setTimeout(() => {
-            if (!isGameOver) {
-                dispatch(moveSnake())
-                callNextMove()
-            }
-        }, 200)
-    }, [isGameOver, dispatch])
+    useEffect(() => {
+        if (isGameOver) {
+            setIsGameRunning(false)
+        }
+    }, [isGameOver]);
 
-    const startGame = useCallback(callNextMove, [callNextMove])
+    useEffect(() => {
+        if (isGameRunning) {
+            // TODO: would be nice to use requestAnimationFrame
+            const timer = setInterval(() => {
+                dispatch(moveSnake())
+            }, 200);
+            setTimeoutNumber(timer)
+        } else {
+            clearInterval(timeoutNumber)
+        }
+    }, [dispatch, isGameRunning]);
+
+    const startGame = useCallback(() => {
+        setIsGameRunning(true)
+    }, [])
 
     const restartGame = useCallback(() => {
         if (!columns || !rows) throw new Error('Col and Row are required')
         dispatch(initializeGame({xMax: columns - 1, yMax: rows - 1}))
-        callNextMove()
-    }, [columns, rows, dispatch, callNextMove])
+        setIsGameRunning(true)
+    }, [columns, rows, dispatch])
 
     const initGame = useCallback((col: number, row: number) => {
         setColumns(col)
